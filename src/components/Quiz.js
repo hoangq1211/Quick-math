@@ -56,7 +56,7 @@ const Button = styled.button`
     font-size: 1em;
     outline: none;
     user-select: none;
-    margin-top: 2em;
+    margin-top: 1em;
     cursor: default;
 
     @media screen and (min-width: 350px) {
@@ -186,7 +186,7 @@ const Quiz = () => {
                         ))}
                     </Options>
                     <div style={{ display: 'inline-block'}}>
-                        <Button onClick={submitAnswer}>{timeUp ? 'Câu tiếp' : 'Trả lời'}</Button>
+                        <Button onClick={submitAnswer}>{timeUp ? 'Câu tiếp' : number === 4 ? 'Kết thúc': 'Trả Lời'}</Button>
                         <Button onClick={resetAnswer} style={{ marginTop: '0px', marginLeft: '10px'}}>Reset</Button>
                     </div>
                     <p style={{ marginTop: '1em' }}>{timeUp ? 'Câu trả lời không được ghi nhận !' : transcript}</p>
