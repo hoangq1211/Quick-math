@@ -118,22 +118,27 @@ const Quiz = () => {
         },
     ]
 
-
     useEffect(() => {
         if (!mounted.current) {
             setQuiz(quiz1);
-            SpeechRecognition.startListening();
+            SpeechRecognition.startListening({ language: 'vi-VN' });
             setTimeUp(false);
-            setTimeout(() => {
+            let handler = setTimeout(() => {
                 setTimeUp(true);
             }, 9000);
             mounted.current = true;
+            return () => {
+                clearTimeout(handler);
+            };
         } else {
-            SpeechRecognition.startListening();
+            SpeechRecognition.startListening({ language: 'vi-VN' });
             setTimeUp(false);
-            setTimeout(() => {
+            let handler = setTimeout(() => {
                 setTimeUp(true);
             }, 9000);
+            return () => {
+                clearTimeout(handler);
+            };
         }
     }, [number]);
 
@@ -146,9 +151,12 @@ const Quiz = () => {
         if (quiz[number].correct_answer === transcript) setPts(pts + 1);
         setKey(prevKey => prevKey + 1)
         setNumber(number + 1);
-        setTimeout(() => {
-                setTimeUp(true);
-        }, 9000);
+
+    }
+
+    const resetAnswer = () => {
+        resetTranscript();
+        SpeechRecognition.startListening({ language: 'vi-VN' });
     }
 
     return (
@@ -179,7 +187,7 @@ const Quiz = () => {
                     </Options>
                     <div style={{ display: 'inline-block'}}>
                         <Button onClick={submitAnswer}>{timeUp ? 'Câu tiếp' : 'Trả lời'}</Button>
-                        <Button onClick={resetTranscript} style={{ marginTop: '0px', marginLeft: '10px'}}>Reset</Button>
+                        <Button onClick={resetAnswer} style={{ marginTop: '0px', marginLeft: '10px'}}>Reset</Button>
                     </div>
                     <p style={{ marginTop: '1em' }}>{timeUp ? 'Câu trả lời không được ghi nhận !' : transcript}</p>
                 </>
